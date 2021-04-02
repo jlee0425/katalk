@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import IconButton from '@material-ui/core/IconButton';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
@@ -9,11 +9,12 @@ interface Props {}
 
 export const SettingsBtns = (props: Props) => {
 	/* notification function */
-	const notification = true;
+	const [notification, setNotification] = useState(true);
+	const toggleNotifications = () => setNotification(!notification);
 
 	return (
 		<Container>
-			<IconButton>
+			<IconButton onClick={toggleNotifications}>
 				{notification ? <NotificationsActiveIcon /> : <NotificationsOffIcon />}
 			</IconButton>
 			<IconButton>
