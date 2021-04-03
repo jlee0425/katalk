@@ -2,16 +2,15 @@ import { auth, googleAuthProvider } from '@lib/firebase';
 import { CircularProgress } from '@material-ui/core';
 import Head from 'next/head';
 import React from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import styled from 'styled-components';
 
-interface Props {}
+interface Props {
+	loading: boolean;
+}
 
-const login = (props: Props) => {
-	const [, loading] = useAuthState(auth);
-	const signInWithGoogle = async () => {
-		const { user } = await auth.signInWithPopup(googleAuthProvider);
-	};
+const Login = ({ loading }: Props) => {
+	const signInWithGoogle = () =>
+		auth.signInWithPopup(googleAuthProvider).catch(console.log);
 
 	return (
 		<Container>
@@ -21,11 +20,9 @@ const login = (props: Props) => {
 			<LogoContainer>
 				<Logo src='/logo.png' />
 				{loading ? (
-					<CircularProgress />
+					<Spinner color='inherit' />
 				) : (
-					<LoginBtn onClick={signInWithGoogle} color='primary'>
-						Sign In with Google
-					</LoginBtn>
+					<LoginBtn onClick={signInWithGoogle}>Sign In with Google</LoginBtn>
 				)}
 			</LogoContainer>
 		</Container>
@@ -63,4 +60,8 @@ const LoginBtn = styled.button`
 	width: 80%;
 `;
 
-export default login;
+const Spinner = styled(CircularProgress)`
+	color: ${({ theme }) => theme.colors.kakaoBrown};
+`;
+
+export default Login;
