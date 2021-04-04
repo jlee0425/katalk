@@ -2,15 +2,23 @@ import { Avatar } from '@material-ui/core';
 import React from 'react';
 import styled from 'styled-components';
 
-interface Props {}
+interface Props {
+	username: string;
+	email: string;
+	photoURL: string;
+}
 
-export const UserInfo = (props: Props) => {
+export const UserCard = ({ username, email, photoURL }: Props) => {
 	return (
 		<Container>
-			<Avatar>J</Avatar>
+			{photoURL ? (
+				<Avatar src={photoURL} />
+			) : (
+				<Avatar>{username[0].toUpperCase()}</Avatar>
+			)}
 			<UserDetails>
-				<h4>User Name</h4>
-				<p>User ID</p>
+				<h4>{username || 'Username'}</h4>
+				<p>{email || 'Email'}</p>
 			</UserDetails>
 		</Container>
 	);
