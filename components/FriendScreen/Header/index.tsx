@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Topbar } from './Topbar';
-import { UserInfo } from './UserInfo';
+import { UserCard } from '../UserCard';
+import { auth } from '@lib/firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { UserContext } from '@lib/context';
 
-interface Props {}
-
-const index = (props: Props) => {
+const index = () => {
+	const { username, email, photoURL } = useContext(UserContext);
 	return (
 		<Container>
 			<Topbar />
-			<UserInfo />
+			<UserCard username={username} email={email} photoURL={photoURL} />
 		</Container>
 	);
 };
