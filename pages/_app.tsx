@@ -1,14 +1,14 @@
 import { UserContext, UserProps } from '@lib/context';
-import { auth, firestore } from '@lib/firebase';
-import firebase from 'firebase';
+import { firestore, serverTimestamp } from '@lib/firebase';
+import { useUserData } from '@lib/hooks';
 import { AppProps } from 'next/app';
 import React, { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { theme } from 'theme';
 import Login from './login';
 
 function MyApp({ Component, pageProps }: AppProps) {
-	const [user, loading] = useAuthState(auth);
+	const { user, loading } = useUserData();
 	const [currentUser, setCurrentUser] = useState<UserProps>();
 
 	useEffect(() => {
@@ -17,12 +17,12 @@ function MyApp({ Component, pageProps }: AppProps) {
 				username: user.displayName || 'username',
 				email: user.email || 'email',
 				photoURL: user.photoURL || '',
-				lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
+				lastSeen: serverTimestamp(),
 			});
 			firestore
 				.collection('users')
 				.doc(user.uid)
-				.set({ currentUser }, { merge: true });
+				.set({ ...currentUser }, { merge: true });
 		}
 	}, [user]);
 
@@ -61,10 +61,3 @@ const GlobalStyle = createGlobalStyle`
 		box-sizing: border-box;
 	}
 `;
-
-const theme = {
-	colors: {
-		kakaoBrown: '#3A1D1D',
-		kakaoYellow: '#F7E600',
-	},
-};
