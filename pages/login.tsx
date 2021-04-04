@@ -9,8 +9,8 @@ interface Props {
 }
 
 const Login = ({ loading }: Props) => {
-	const signInWithGoogle = () =>
-		auth.signInWithPopup(googleAuthProvider).catch(console.log);
+	const signInWithGoogle = async () =>
+		await auth.signInWithPopup(googleAuthProvider).catch(console.log);
 
 	return (
 		<Container>
@@ -22,7 +22,10 @@ const Login = ({ loading }: Props) => {
 				{loading ? (
 					<Spinner color='inherit' />
 				) : (
-					<LoginBtn onClick={signInWithGoogle}>Sign In with Google</LoginBtn>
+					<LoginBtn onClick={signInWithGoogle}>
+						<Logo src='/google.png' style={{ margin: 0, paddingRight: 10 }} />
+						Sign In with Google
+					</LoginBtn>
 				)}
 			</LogoContainer>
 		</Container>
@@ -44,12 +47,13 @@ const LogoContainer = styled.div`
 `;
 const Logo = styled.img`
 	margin-bottom: 35px;
-	width: 80%;
 	height: 80%;
-	max-width: 250px;
 	max-height: 250px;
 `;
 const LoginBtn = styled.button`
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	color: whitesmoke;
 	background-color: ${({ theme }) => theme.colors.kakaoBrown};
 	border-radius: 5px;
