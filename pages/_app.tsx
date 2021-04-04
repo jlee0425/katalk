@@ -1,8 +1,48 @@
+import { UserContext, UserProps } from '@lib/context';
+import { auth, firestore } from '@lib/firebase';
+import firebase from 'firebase';
 import { AppProps } from 'next/app';
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '@lib/firebase';
-import { UserContext } from '@lib/context';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import Login from './login';
+
+function MyApp({ Component, pageProps }: AppProps) {
+	const [user, loading] = useAuthState(auth);
+	const [currentUser, setCurrentUser] = useState<UserProps>();
+
+	useEffect(() => {
+		if (user) {
+			setCurrentUser({
+				username: user.displayName || 'username',
+				email: user.email || 'email',
+				photoURL: user.photoURL || '',
+				lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
+			});
+			firestore
+				.collection('users')
+				.doc(user.uid)
+				.set({ currentUser }, { merge: true });
+		}
+	}, [user]);
+
+	return (
+		<>
+			<GlobalStyle />
+			<ThemeProvider theme={theme}>
+				{currentUser ? (
+					<UserContext.Provider value={currentUser}>
+						<Component {...pageProps} />
+					</UserContext.Provider>
+				) : (
+					<Login loading={loading} />
+				)}
+			</ThemeProvider>
+		</>
+	);
+}
+
+export default MyApp;
 
 const GlobalStyle = createGlobalStyle`
 	body {
@@ -28,16 +68,3 @@ const theme = {
 		kakaoYellow: '#F7E600',
 	},
 };
-
-function MyApp({ Component, pageProps }: AppProps) {
-	return (
-		<>
-			<GlobalStyle />
-			<ThemeProvider theme={theme}>
-				<Component {...pageProps} />
-			</ThemeProvider>
-		</>
-	);
-}
-
-export default MyApp;
