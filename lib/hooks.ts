@@ -1,24 +1,26 @@
+import { UserProps } from './context';
 import { useState, useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, firestore } from './firebase';
+import { addUserToDB, auth, firestore } from './firebase';
 
 export const useUserData = () => {
 	const [user, loading] = useAuthState(auth);
-	const [username, setUsername] = useState(null);
+	const [userInfo, setUserInfo] = useState<UserProps>();
 
 	useEffect(() => {
 		let unsubscribe;
 		if (user) {
+			(async () => await addUserToDB(user))();
 			const ref = firestore.collection('users').doc(user.uid);
 			unsubscribe = ref.onSnapshot((doc) => {
-				setUsername(doc.data()?.username);
+				setUserInfo((doc.data() as UserProps) || undefined);
 			});
 		} else {
-			setUsername(null);
+			setUserInfo(undefined);
 		}
 
 		return unsubscribe;
 	}, [user]);
 
-	return { user, username, loading };
+	return { userInfo, loading };
 };
