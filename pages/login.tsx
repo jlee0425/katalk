@@ -1,3 +1,8 @@
+import {
+	GridCenter,
+	KatalkButton,
+	VARIANT,
+} from '@components/styledComponents';
 import { auth, googleAuthProvider } from '@lib/firebase';
 import { CircularProgress } from '@material-ui/core';
 import Head from 'next/head';
@@ -22,19 +27,17 @@ const Login = ({ loading }: Props) => {
 				{loading ? (
 					<Spinner color='inherit' />
 				) : (
-					<LoginBtn onClick={signInWithGoogle}>
+					<KatalkButton onClick={signInWithGoogle} variant={VARIANT.BROWN}>
 						<Logo src='/google.png' style={{ margin: 0, paddingRight: 10 }} />
 						Sign In with Google
-					</LoginBtn>
+					</KatalkButton>
 				)}
 			</LogoContainer>
 		</Container>
 	);
 };
 
-const Container = styled.div`
-	display: grid;
-	place-items: center;
+const Container = styled(GridCenter)`
 	height: 100vh;
 	background-color: #f7e600;
 `;
@@ -47,23 +50,9 @@ const LogoContainer = styled.div`
 `;
 const Logo = styled.img`
 	margin-bottom: 35px;
-	height: 80%;
+	height: 70%;
 	max-height: 250px;
 `;
-const LoginBtn = styled.button`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: whitesmoke;
-	background-color: ${({ theme }) => theme.colors.kakaoBrown};
-	border-radius: 5px;
-	border: 1px solid ${({ theme }) => theme.colors.kakaoBrown};
-	box-shadow: 1px 1px 5px ${({ theme }) => theme.colors.kakaoBrown};
-	height: 35px;
-	font-weight: 700;
-	width: 80%;
-`;
-
 const Spinner = styled(CircularProgress)`
 	color: ${({ theme }) => theme.colors.kakaoBrown};
 `;
