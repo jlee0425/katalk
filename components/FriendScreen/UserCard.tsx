@@ -3,13 +3,13 @@ import { Avatar } from '@material-ui/core';
 import React from 'react';
 import styled from 'styled-components';
 
-export const UserCard = ({ username, email, photoURL }: UserProps) => {
+export const UserCard = ({ username, email, photoURL }: Partial<UserProps>) => {
 	return (
 		<Container>
 			{photoURL ? (
 				<Avatar src={photoURL} />
 			) : (
-				<Avatar>{username[0].toUpperCase()}</Avatar>
+				<Avatar>{username![0].toUpperCase()}</Avatar>
 			)}
 			<UserDetails>
 				<h4>{username}</h4>
