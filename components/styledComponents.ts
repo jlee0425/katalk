@@ -40,6 +40,7 @@ export const KatalkButton = styled.button<AdditionalProps>`
 	height: 35px;
 	font-weight: 700;
 	width: 80%;
+	margin-top: 1.8rem;
 `;
 
 export const Paper = styled.div<AdditionalProps>`
@@ -57,7 +58,7 @@ export const Paper = styled.div<AdditionalProps>`
         box-shadow: 1px 1px 5px ${theme.colors.kakaoYellow};`;
 		}
 	}}
-	height: 200px;
-	width: 250px;
+	height: 15rem;
+	width: 15rem;
 	max-height: 100%;
 `;
