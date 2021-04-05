@@ -1,3 +1,5 @@
+import { defaultUser } from './context';
+import { UserProps } from '@lib/context';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -22,3 +24,20 @@ export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 
 export const firestore = app.firestore();
 export const serverTimestamp = firebase.firestore.FieldValue.serverTimestamp;
+
+export const addUserToDB = async (user: firebase.User): Promise<void> => {
+	await firestore
+		.collection('users')
+		.doc(user.uid)
+		.set(userConverter(user), { merge: true });
+};
+
+export const userConverter = (user: firebase.User): UserProps => {
+	const converted: UserProps = {
+		username: user.displayName || defaultUser.username,
+		email: user.email || defaultUser.email,
+		photoURL: user.photoURL || defaultUser.photoURL,
+		lastSeen: serverTimestamp(),
+	};
+	return converted;
+};
