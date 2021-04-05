@@ -1,22 +1,20 @@
 import { IconButton } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import SearchIcon from '@material-ui/icons/Search';
+import { AddFriendBtn } from './AddFriendBtn';
+import { SearchFriendBtn } from './SearchFriendBtn';
 
 interface Props {}
 
 export const Topbar = (props: Props) => {
+	const [addModalOpen, setAddModalOpen] = useState(false);
+
 	return (
 		<Container>
 			<h2>Friends</h2>
 			<Icons>
-				<IconButton>
-					<SearchIcon />
-				</IconButton>
-				<IconButton>
-					<PersonAddIcon />
-				</IconButton>
+				<AddFriendBtn />
+				<SearchFriendBtn />
 			</Icons>
 		</Container>
 	);
@@ -28,4 +26,7 @@ const Container = styled.div`
 	align-items: center;
 	justify-content: space-between;
 `;
-const Icons = styled.div``;
+const Icons = styled.div`
+	display: flex;
+	flex-direction: row;
+`;
