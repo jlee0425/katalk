@@ -1,14 +1,9 @@
+import { UserProps } from '@lib/context';
 import { Avatar } from '@material-ui/core';
 import React from 'react';
 import styled from 'styled-components';
 
-interface Props {
-	username: string;
-	email: string;
-	photoURL: string;
-}
-
-export const UserCard = ({ username, email, photoURL }: Props) => {
+export const UserCard = ({ username, email, photoURL }: UserProps) => {
 	return (
 		<Container>
 			{photoURL ? (
@@ -17,8 +12,8 @@ export const UserCard = ({ username, email, photoURL }: Props) => {
 				<Avatar>{username[0].toUpperCase()}</Avatar>
 			)}
 			<UserDetails>
-				<h4>{username || 'Username'}</h4>
-				<p>{email || 'Email'}</p>
+				<h4>{username}</h4>
+				<p>{email}</p>
 			</UserDetails>
 		</Container>
 	);
