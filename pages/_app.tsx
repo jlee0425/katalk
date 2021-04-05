@@ -1,37 +1,20 @@
-import { UserContext, UserProps } from '@lib/context';
-import { firestore, serverTimestamp } from '@lib/firebase';
+import { UserContext } from '@lib/context';
 import { useUserData } from '@lib/hooks';
 import { AppProps } from 'next/app';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { theme } from 'theme';
 import Login from './login';
 
 function MyApp({ Component, pageProps }: AppProps) {
-	const { user, loading } = useUserData();
-	const [currentUser, setCurrentUser] = useState<UserProps>();
-
-	useEffect(() => {
-		if (user) {
-			setCurrentUser({
-				username: user.displayName || 'username',
-				email: user.email || 'email',
-				photoURL: user.photoURL || '',
-				lastSeen: serverTimestamp(),
-			});
-			firestore
-				.collection('users')
-				.doc(user.uid)
-				.set({ ...currentUser }, { merge: true });
-		}
-	}, [user]);
+	const { userInfo, loading } = useUserData();
 
 	return (
 		<>
 			<GlobalStyle />
 			<ThemeProvider theme={theme}>
-				{currentUser ? (
-					<UserContext.Provider value={currentUser}>
+				{userInfo && !loading ? (
+					<UserContext.Provider value={userInfo}>
 						<Component {...pageProps} />
 					</UserContext.Provider>
 				) : (
