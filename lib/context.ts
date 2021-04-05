@@ -9,7 +9,7 @@ export interface UserProps {
 	lastSeen: firebase.firestore.FieldValue;
 }
 
-const defaultUser: UserProps = {
+export const defaultUser: UserProps = {
 	username: 'username',
 	email: 'email@email.com',
 	photoURL: '',
