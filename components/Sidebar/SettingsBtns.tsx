@@ -4,7 +4,8 @@ import IconButton from '@material-ui/core/IconButton';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import NotificationsOffIcon from '@material-ui/icons/NotificationsOff';
 import SettingsIcon from '@material-ui/icons/Settings';
-
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { auth } from '@lib/firebase';
 interface Props {}
 
 export const SettingsBtns = (props: Props) => {
@@ -19,6 +20,9 @@ export const SettingsBtns = (props: Props) => {
 			</IconButton>
 			<IconButton>
 				<SettingsIcon />
+			</IconButton>
+			<IconButton onClick={() => auth.signOut()}>
+				<ExitToAppIcon />
 			</IconButton>
 		</Container>
 	);
