@@ -25,13 +25,6 @@ export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 export const firestore = app.firestore();
 export const serverTimestamp = firebase.firestore.FieldValue.serverTimestamp;
 
-export const addUserToDB = async (user: firebase.User): Promise<void> => {
-	await firestore
-		.collection('users')
-		.doc(user.uid)
-		.set(userConverter(user), { merge: true });
-};
-
 export const userConverter = (user: firebase.User): UserProps => {
 	const converted: UserProps = {
 		username: user.displayName || defaultUser.username,
@@ -40,4 +33,19 @@ export const userConverter = (user: firebase.User): UserProps => {
 		lastSeen: serverTimestamp(),
 	};
 	return converted;
+};
+
+export const getUserWithEmail = async (email: string) => {
+	const userRef = firestore.collection('users');
+	const query = userRef.where('email', '==', email).limit(1);
+	const user = (await query.get()).docs[0];
+
+	return user;
+};
+
+export const getUserWithID = async (id: string) => {
+	const userRef = firestore.collection('users');
+	const user = await userRef.doc(id).get();
+
+	return user;
 };
