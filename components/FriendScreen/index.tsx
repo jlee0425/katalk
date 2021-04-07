@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { FriendsList } from './FriendsList';
 import Header from './Header';
 
 interface Props {}
@@ -8,6 +9,7 @@ const index = (props: Props) => {
 	return (
 		<Container>
 			<Header />
+			<FriendsList />
 		</Container>
 	);
 };
