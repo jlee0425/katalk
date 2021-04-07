@@ -1,10 +1,8 @@
+import { UserContext } from '@lib/context';
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Topbar } from './Topbar';
 import { UserCard } from '../UserCard';
-import { auth } from '@lib/firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { UserContext } from '@lib/context';
+import { Topbar } from './Topbar';
 
 const index = () => {
 	const { username, email, photoURL } = useContext(UserContext);
@@ -18,6 +16,7 @@ const index = () => {
 
 const Container = styled.div`
 	flex: 1;
+	position: sticky;
 `;
 
 export default index;
