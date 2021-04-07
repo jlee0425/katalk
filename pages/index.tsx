@@ -1,7 +1,8 @@
 import Head from 'next/head';
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from '@components/Sidebar';
 import styled from 'styled-components';
+import FriendScreen from '@components/FriendScreen';
 
 export default function Home() {
 	return (
@@ -12,9 +13,13 @@ export default function Home() {
 			</Head>
 			<Body>
 				<Sidebar />
+				<FriendScreen />
 			</Body>
 		</div>
 	);
 }
 
-const Body = styled.div``;
+const Body = styled.div`
+	display: flex;
+	flex-direction: row;
+`;
