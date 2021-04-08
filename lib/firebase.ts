@@ -3,6 +3,7 @@ import { UserProps } from '@lib/context';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import { useDocumentDataOnce } from 'react-firebase-hooks/firestore';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -44,8 +45,10 @@ export const getUserWithEmail = async (email: string) => {
 };
 
 export const getUserWithID = async (id: string) => {
-	const userRef = firestore.collection('users');
-	const user = await userRef.doc(id).get();
+	const userRef = await firestore.collection('users').doc(id).get();
+	const user = userRef.data();
+
+	console.log(`user`, user);
 
 	return user;
 };
