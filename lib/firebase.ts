@@ -44,11 +44,11 @@ export const getUserWithEmail = async (email: string) => {
 	return user;
 };
 
-export const getUserWithID = async (id: string) => {
+export const getUserWithID = async (
+	id: string,
+): Promise<firebase.firestore.DocumentData | undefined> => {
 	const userRef = await firestore.collection('users').doc(id).get();
 	const user = userRef.data();
-
-	console.log(`user`, user);
 
 	return user;
 };

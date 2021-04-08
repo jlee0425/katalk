@@ -18,17 +18,16 @@ export const FriendsList = (props: any) => {
 			.doc(auth.currentUser!.uid)
 			.collection('friends'),
 	);
-	const [friends, setFriends] = useState<UserProps>();
+	const [friends, setFriends] = useState<firebase.firestore.DocumentData>([]);
 
 	useEffect(() => {
 		const fetchFriendList = async () => {
 			const friendsIDs = friendsSnapshot!.docs.map((doc) => doc.id);
-			const res = friendsIDs.map(async (id) => {
-				const user = await getUserWithID(id);
-				return user;
-			});
-			console.log(`res`, res);
-			setFriends(res);
+
+			const users = await Promise.all(
+				friendsIDs.map((id) => getUserWithID(id)),
+			);
+			setFriends(users);
 		};
 
 		if (friendsSnapshot && !loading) {
@@ -38,9 +37,9 @@ export const FriendsList = (props: any) => {
 
 	return (
 		<Container>
-			{/* {friends.map((friend) => (
+			{friends.map((friend: UserProps) => (
 				<UserCard {...friend} />
-			))} */}
+			))}
 		</Container>
 	);
 };
