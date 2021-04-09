@@ -15,7 +15,8 @@ const index = () => {
 };
 
 const Container = styled.div`
-	flex: 1;
+	top: 0;
+	height: fit-content;
 	position: sticky;
 `;
 

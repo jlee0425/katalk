@@ -22,6 +22,12 @@ export const UserCard = ({ username, email, photoURL }: Partial<UserProps>) => {
 const Container = styled.div`
 	display: flex;
 	flex-direction: row;
+	border-bottom: 1px solid #e6e3e3;
+	padding: 1rem 1rem;
+
+	&:hover {
+		background: #eeeeee;
+	}
 `;
 
 const UserDetails = styled.div`

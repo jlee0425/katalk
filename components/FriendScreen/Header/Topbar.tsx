@@ -22,6 +22,7 @@ const Container = styled.div`
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
+	padding: 0 1rem;
 `;
 const Icons = styled.div`
 	display: flex;
