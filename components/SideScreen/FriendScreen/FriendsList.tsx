@@ -38,7 +38,7 @@ export const FriendsList = (props: any) => {
 	return (
 		<Container>
 			{friends.map((friend: UserProps) => (
-				<UserCard {...friend} />
+				<UserCard {...friend} key={friend.email} />
 			))}
 		</Container>
 	);
