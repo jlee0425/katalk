@@ -2,9 +2,13 @@ import Head from 'next/head';
 import React, { useState } from 'react';
 import Sidebar from '@components/Sidebar';
 import styled from 'styled-components';
-import FriendScreen from '@components/FriendScreen';
+import SideScreen from '@components/SideScreen';
+import MainScreen from '@components/MainScreen';
+import { ScreenContext, SCREENS } from '@lib/context';
 
 export default function Home() {
+	const [screen, setScreen] = useState(SCREENS.FriendScreen);
+
 	return (
 		<div>
 			<Head>
@@ -12,8 +16,11 @@ export default function Home() {
 				<title>Katalk Clone</title>
 			</Head>
 			<Body>
-				<Sidebar />
-				<FriendScreen />
+				<ScreenContext.Provider value={{ screen, setScreen }}>
+					<Sidebar />
+					<SideScreen />
+					<MainScreen />
+				</ScreenContext.Provider>
 			</Body>
 		</div>
 	);
