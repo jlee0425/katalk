@@ -1,3 +1,4 @@
+import { Modal, TextField } from '@material-ui/core';
 import styled from 'styled-components';
 
 export enum VARIANT {
@@ -61,4 +62,26 @@ export const Paper = styled.div<AdditionalProps>`
 	height: 15rem;
 	width: 15rem;
 	max-height: 100%;
+`;
+
+export const SideScreenContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	height: 100vh;
+	background: #ffffff;
+`;
+
+export const CustomModal = styled(Modal)`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`;
+
+export const Input = styled(TextField)`
+	color: ${({ theme }) => theme.colors.kakaoBrown};
+`;
+
+export const Title = styled.h4`
+	color: ${({ theme }) => theme.colors.kakaoBrown};
 `;
