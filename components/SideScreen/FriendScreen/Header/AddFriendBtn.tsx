@@ -1,23 +1,19 @@
 import {
-	Backdrop,
-	Button,
-	IconButton,
-	Modal,
-	TextField,
-} from '@material-ui/core';
-import { useSpring } from '@react-spring/core';
-import { animated } from '@react-spring/web';
-import React, { forwardRef, ReactElement, useContext, useState } from 'react';
-import styled from 'styled-components';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import {
 	Center,
+	CustomModal,
 	KatalkButton,
 	Paper,
 	VARIANT,
+	Input,
+	Title,
 } from '@components/styledComponents';
 import { auth, firestore, getUserWithEmail } from '@lib/firebase';
-import { UserContext } from '@lib/context';
+import { Backdrop, Button, IconButton, TextField } from '@material-ui/core';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import { useSpring } from '@react-spring/core';
+import { animated } from '@react-spring/web';
+import React, { forwardRef, ReactElement, useState } from 'react';
+import styled from 'styled-components';
 
 interface FadeProps {
 	children?: ReactElement;
@@ -114,15 +110,4 @@ export const AddFriendBtn = () => {
 	);
 };
 
-const CustomModal = styled(Modal)`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-`;
-const Title = styled.h4`
-	color: ${({ theme }) => theme.colors.kakaoBrown};
-`;
-const Input = styled(TextField)`
-	color: ${({ theme }) => theme.colors.kakaoBrown};
-`;
 const Submit = styled(Button)``;
