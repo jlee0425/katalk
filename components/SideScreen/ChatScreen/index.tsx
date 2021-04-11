@@ -1,14 +1,13 @@
 import { SideScreenContainer } from '@components/styledComponents';
 import React from 'react';
-import styled from 'styled-components';
-import { FriendsList } from './FriendsList';
 import Header from './Header';
 
-const index = () => {
+interface Props {}
+
+const index = (props: Props) => {
 	return (
 		<SideScreenContainer>
 			<Header />
-			<FriendsList />
 		</SideScreenContainer>
 	);
 };
