@@ -1,9 +1,13 @@
 import { UserProps } from '@lib/context';
-import { Avatar } from '@material-ui/core';
-import React from 'react';
+import { Avatar, FormControlLabel } from '@material-ui/core';
+import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 export const UserCheckBox = ({ username, photoURL }: Partial<UserProps>) => {
+	const [checked, setChecked] = useState(false);
 	return (
 		<Container>
 			{photoURL ? (
@@ -11,9 +15,21 @@ export const UserCheckBox = ({ username, photoURL }: Partial<UserProps>) => {
 			) : (
 				<Avatar>{username![0].toUpperCase()}</Avatar>
 			)}
-			<UserDetails>
-				<h4>{username}</h4>
-			</UserDetails>
+			<FormControlLabel
+				label={username}
+				labelPlacement='start'
+				control={
+					<Checkbox
+						icon={<RadioButtonUncheckedIcon />}
+						checkedIcon={<CheckedCircle />}
+					/>
+				}
+				style={{ float: 'right' }}
+				value={checked}
+				onChange={() => {
+					setChecked(!checked);
+				}}
+			/>
 		</Container>
 	);
 };
@@ -21,8 +37,8 @@ export const UserCheckBox = ({ username, photoURL }: Partial<UserProps>) => {
 const Container = styled.div`
 	display: flex;
 	flex-direction: row;
+	align-items: center;
 	border-bottom: 1px solid #e6e3e3;
-	padding: 1rem 1rem;
 
 	&:hover {
 		background: #eeeeee;
@@ -39,9 +55,17 @@ const UserDetails = styled.div`
 	}
 
 	h4 {
-		font-weight: 500;
+		font-weight: 400;
 	}
 	p {
 		font-size: 12px;
+	}
+`;
+
+const CheckedCircle = styled(CheckCircleIcon)`
+	color: ${({ theme }) => theme.colors.kakaoYellow};
+
+	&:hover {
+		color: green;
 	}
 `;

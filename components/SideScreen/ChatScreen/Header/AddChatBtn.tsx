@@ -1,19 +1,14 @@
-import {
-	VARIANT,
-	Center,
-	KatalkButton,
-	Paper,
-	CustomModal,
-	Title,
-} from '@components/styledComponents';
-import { getUserWithEmail, firestore, auth } from '@lib/firebase';
+import { Center, CustomModal, Title } from '@components/styledComponents';
+import { UserProps } from '@lib/context';
 import { useFriendList } from '@lib/hooks';
 import { Backdrop, Button, IconButton, Input } from '@material-ui/core';
 import AddCommentIcon from '@material-ui/icons/AddComment';
-import React, { forwardRef, ReactElement, useState } from 'react';
-import { useSpring, animated } from 'react-spring';
-import styled from 'styled-components';
 import SearchIcon from '@material-ui/icons/Search';
+import React, { forwardRef, ReactElement, useState } from 'react';
+import { animated, useSpring } from 'react-spring';
+import styled from 'styled-components';
+import { UserCheckBox } from '../UserCheckBox';
+import { SelectedTags } from './SelectedTags';
 
 interface Props {}
 
@@ -78,12 +73,21 @@ export const AddChatBtn = (props: Props) => {
 						<Title>
 							Choose Participants {!!selected.length && selected.length}
 						</Title>
+						<SelectedTags tags={selected} />
 						<Input
 							type='search'
 							startAdornment={<SearchIcon height='2px' />}
 							placeholder='Search Name'
 							onChange={(e) => setEmail(e.target.value)}
 						/>
+						<p>Friends {friends.length}</p>
+						{friends.map((friend: UserProps) => (
+							<UserCheckBox
+								username={friend.username}
+								key={friend.email}
+								photoURL={friend.photoURL}
+							/>
+						))}
 						<Center>
 							<Button
 								type='submit'
@@ -103,7 +107,8 @@ export const AddChatBtn = (props: Props) => {
 const TempPaper = styled.div`
 	padding: 25px;
 	border-radius: 5px;
-	background-color: ${({ theme }) => theme.colors.kakaoYellow};
+	/* background-color: ${({ theme }) => theme.colors.kakaoYellow}; */
+	background: white;
 	border: 1px solid ${({ theme }) => theme.colors.kakaoYellow};
 	box-shadow: 1px 1px 5px ${({ theme }) => theme.colors.kakaoYellow};
 	height: 30rem;
