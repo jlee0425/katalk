@@ -33,3 +33,13 @@ export const ScreenContext = createContext<ScreenProps>({
 	screen: SCREENS.FriendScreen,
 	setScreen: () => SCREENS,
 });
+
+export interface SelectFriendsProps {
+	selected: UserProps[];
+	setSelected: Dispatch<SetStateAction<UserProps>>;
+}
+
+export const SelectFriendsContext = createContext<SelectFriendsProps>({
+	selected: [],
+	setSelected: () => {},
+});

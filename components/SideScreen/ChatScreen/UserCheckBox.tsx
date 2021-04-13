@@ -1,22 +1,26 @@
-import { UserProps } from '@lib/context';
+import { SelectFriendsContext, UserProps } from '@lib/context';
 import { Avatar, FormControlLabel } from '@material-ui/core';
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
-export const UserCheckBox = ({ username, photoURL }: Partial<UserProps>) => {
-	const [checked, setChecked] = useState(false);
+interface Props {
+	user: UserProps;
+}
+
+export const UserCheckBox = ({ user }: Props) => {
+	const { selected, setSelected } = useContext(SelectFriendsContext);
 	return (
 		<Container>
-			{photoURL ? (
-				<Avatar src={photoURL} />
+			{user.photoURL ? (
+				<Avatar src={user.photoURL} />
 			) : (
-				<Avatar>{username![0].toUpperCase()}</Avatar>
+				<Avatar>{user.username![0].toUpperCase()}</Avatar>
 			)}
 			<FormControlLabel
-				label={username}
+				label={user.username}
 				labelPlacement='start'
 				control={
 					<Checkbox
@@ -25,9 +29,8 @@ export const UserCheckBox = ({ username, photoURL }: Partial<UserProps>) => {
 					/>
 				}
 				style={{ float: 'right' }}
-				value={checked}
 				onChange={() => {
-					setChecked(!checked);
+					setSelected([...selected, user]);
 				}}
 			/>
 		</Container>

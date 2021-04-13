@@ -1,13 +1,11 @@
-import { UserProps } from '@lib/context';
-import React from 'react';
+import { SelectFriendsContext, UserProps } from '@lib/context';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Tag } from './Tag';
 
-interface Props {
-	tags: UserProps[];
-}
+export const SelectedTags = () => {
+	const { selected: tags } = useContext(SelectFriendsContext);
 
-export const SelectedTags = ({ tags }: Props) => {
 	return (
 		<Container>
 			{tags.map((tag, i) => (
