@@ -11,9 +11,9 @@ export const Tag = ({ username }: Props) => {
 	return (
 		<Container>
 			<Name>{username}</Name>
-			<IconButton>
+			<Button>
 				<CloseIcon />
-			</IconButton>
+			</Button>
 		</Container>
 	);
 };
@@ -21,9 +21,18 @@ export const Tag = ({ username }: Props) => {
 const Container = styled.div`
 	display: flex;
 	flex-direction: row;
+	padding: 1rem;
 	align-items: center;
+	justify-content: space-between;
+	width: fit-content;
 	border: 1px grey solid;
-	border-radius: 5px;
+	border-radius: 2rem;
 `;
 
-const Name = styled.p``;
+const Name = styled.p`
+	margin: 0;
+`;
+
+const Button = styled(IconButton)`
+	padding: 0;
+`;
