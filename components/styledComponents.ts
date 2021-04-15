@@ -85,3 +85,16 @@ export const Input = styled(TextField)`
 export const Title = styled.h4`
 	color: ${({ theme }) => theme.colors.kakaoBrown};
 `;
+
+export const LogoContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	max-width: 400px;
+`;
+
+export const Logo = styled.img`
+	margin-bottom: 35px;
+	height: 70%;
+	max-height: 250px;
+`;
