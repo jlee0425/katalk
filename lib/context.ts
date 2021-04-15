@@ -26,11 +26,13 @@ export enum SCREENS {
 
 export interface ScreenProps {
 	screen: SCREENS;
+	selectedElement: UserProps | null;
 	setScreen: Dispatch<SetStateAction<SCREENS>>;
 }
 
 export const ScreenContext = createContext<ScreenProps>({
 	screen: SCREENS.FriendScreen,
+	selectedElement: null,
 	setScreen: () => SCREENS,
 });
 
