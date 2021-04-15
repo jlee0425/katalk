@@ -4,7 +4,13 @@ import { useFriendList } from '@lib/hooks';
 import { Backdrop, Button, IconButton, Input } from '@material-ui/core';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import SearchIcon from '@material-ui/icons/Search';
-import React, { forwardRef, ReactElement, useContext, useState } from 'react';
+import React, {
+	forwardRef,
+	ReactElement,
+	useContext,
+	useEffect,
+	useState,
+} from 'react';
 import { animated, useSpring } from 'react-spring';
 import styled from 'styled-components';
 import { UserCheckBox } from '../UserCheckBox';
@@ -45,15 +51,27 @@ const Fade = forwardRef<HTMLDivElement, FadeProps>(
 
 export const AddChatBtn = (props: Props) => {
 	const [open, setOpen] = useState(false);
-	const [username, setUsername] = useState('');
-	const { selected } = useContext(SelectFriendsContext);
+	const [selected, setSelected] = useState<UserProps[]>([]);
 	const friends = useFriendList();
+	const [listedFriends, setListedFriends] = useState<UserProps[]>([]);
+
+	useEffect(() => {
+		setListedFriends(friends);
+	}, []);
 
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
 
 	const addChat = async (username: string): Promise<void> => {
 		// Todo
+	};
+
+	const handleInputChange = (value: string) => {
+		setListedFriends(
+			friends.filter(({ username }) =>
+				username.toLowerCase().includes(value.toLowerCase()),
+			),
+		);
 	};
 
 	return (
@@ -69,31 +87,33 @@ export const AddChatBtn = (props: Props) => {
 				BackdropProps={{ timeout: 500 }}
 			>
 				<Fade in={open}>
-					<TempPaper>
-						<Title>
-							Choose Participants {!!selected.length && selected.length}
-						</Title>
-						<SelectedTags />
-						<Input
-							type='search'
-							startAdornment={<SearchIcon height='2px' />}
-							placeholder='Search By Name'
-							onChange={(e) => setUsername(e.target.value)}
-						/>
-						<p>Friends {friends.length}</p>
-						{friends.map((friend: UserProps) => (
-							<UserCheckBox user={friend} />
-						))}
-						<Center>
-							<Button
-								type='submit'
-								onClick={() => {}}
-								disabled={!selected.length}
-							>
-								Confirm
-							</Button>
-						</Center>
-					</TempPaper>
+					<SelectFriendsContext.Provider value={{ selected, setSelected }}>
+						<TempPaper>
+							<Title>
+								Choose Participants {!!selected.length && selected.length}
+							</Title>
+							<SelectedTags tags={selected} />
+							<Input
+								type='search'
+								startAdornment={<SearchIcon height='2px' />}
+								placeholder='Search By Name'
+								onChange={(e) => handleInputChange(e.target.value)}
+							/>
+							<p>Friends {listedFriends.length}</p>
+							{listedFriends.map((friend, i) => (
+								<UserCheckBox user={friend} key={i} />
+							))}
+							<Center>
+								<Button
+									type='submit'
+									onClick={() => {}}
+									disabled={!selected.length}
+								>
+									Confirm
+								</Button>
+							</Center>
+						</TempPaper>
+					</SelectFriendsContext.Provider>
 				</Fade>
 			</CustomModal>
 		</>
