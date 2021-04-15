@@ -6,21 +6,31 @@ import styled from 'styled-components';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
-interface Props {
-	user: UserProps;
-}
-
-export const UserCheckBox = ({ user }: Props) => {
+export const UserCheckBox = ({ user }: { user: UserProps }) => {
+	const { photoURL, username } = user;
 	const { selected, setSelected } = useContext(SelectFriendsContext);
+	const [checked, setChecked] = useState(false);
+
+	const handleCheck = () => {
+		const newList = checked
+			? selected.filter(({ email }) => email != user.email)
+			: [...selected, user];
+
+		setSelected(newList);
+		setChecked(!checked);
+	};
+
+	console.log(`checked`, checked);
+
 	return (
 		<Container>
-			{user.photoURL ? (
-				<Avatar src={user.photoURL} />
+			{photoURL ? (
+				<Avatar src={photoURL} />
 			) : (
-				<Avatar>{user.username![0].toUpperCase()}</Avatar>
+				<Avatar>{username![0].toUpperCase()}</Avatar>
 			)}
 			<FormControlLabel
-				label={user.username}
+				label={username}
 				labelPlacement='start'
 				control={
 					<Checkbox
@@ -29,9 +39,8 @@ export const UserCheckBox = ({ user }: Props) => {
 					/>
 				}
 				style={{ float: 'right' }}
-				onChange={() => {
-					setSelected([...selected, user]);
-				}}
+				value={checked}
+				onChange={() => handleCheck()}
 			/>
 		</Container>
 	);
