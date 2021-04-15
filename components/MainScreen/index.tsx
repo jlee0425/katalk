@@ -1,11 +1,16 @@
-import React from 'react';
+import { ScreenContext } from '@lib/context';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { DefaultScreen } from './DefaultScreen';
+import { FriendStatusScreen } from './FriendStatusScreen';
 
 const index = () => {
+	const { selectedElement } = useContext(ScreenContext);
+	const Screen = selectedElement == null ? DefaultScreen : FriendStatusScreen;
+
 	return (
 		<Container>
-			<DefaultScreen />
+			<Screen />
 		</Container>
 	);
 };
