@@ -14,6 +14,7 @@ export const Center = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	height: 100%;
 `;
 export const GridCenter = styled.div`
 	display: grid;

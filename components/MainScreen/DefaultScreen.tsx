@@ -6,14 +6,10 @@ interface Props {}
 
 export const DefaultScreen = (props: Props) => {
 	return (
-		<Container>
+		<Center>
 			<LogoContainer>
 				<Logo src='./logo.png' />
 			</LogoContainer>
-		</Container>
+		</Center>
 	);
 };
-
-const Container = styled(Center)`
-	height: 100%;
-`;
