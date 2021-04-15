@@ -1,6 +1,8 @@
 import {
 	GridCenter,
 	KatalkButton,
+	Logo,
+	LogoContainer,
 	VARIANT,
 } from '@components/styledComponents';
 import { auth, googleAuthProvider } from '@lib/firebase';
@@ -42,17 +44,6 @@ const Container = styled(GridCenter)`
 	background-color: #f7e600;
 `;
 
-const LogoContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	max-width: 400px;
-`;
-const Logo = styled.img`
-	margin-bottom: 35px;
-	height: 70%;
-	max-height: 250px;
-`;
 const Spinner = styled(CircularProgress)`
 	color: ${({ theme }) => theme.colors.kakaoBrown};
 `;
