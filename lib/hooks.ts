@@ -58,5 +58,5 @@ export const useFriendList = () => {
 		}
 	}, [friendsSnapshot, loading]);
 
-	return friends;
+	return friends as UserProps[];
 };
