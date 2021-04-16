@@ -8,6 +8,7 @@ import { ScreenContext, SCREENS } from '@lib/context';
 
 export default function Home() {
 	const [screen, setScreen] = useState(SCREENS.FriendScreen);
+	const [selectedElement, setSelectedElement] = useState(null);
 
 	return (
 		<div>
@@ -16,7 +17,9 @@ export default function Home() {
 				<title>Katalk Clone</title>
 			</Head>
 			<Body>
-				<ScreenContext.Provider value={{ screen, setScreen }}>
+				<ScreenContext.Provider
+					value={{ screen, setScreen, selectedElement, setSelectedElement }}
+				>
 					<Sidebar />
 					<SideScreen />
 					<MainScreen />
