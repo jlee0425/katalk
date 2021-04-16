@@ -1,19 +1,15 @@
+import { UserThumbnail } from '@components/UserThumbnail';
 import { UserProps } from '@lib/context';
-import { Avatar } from '@material-ui/core';
 import React from 'react';
 import styled from 'styled-components';
 
-export const UserCard = ({ username, email, photoURL }: Partial<UserProps>) => {
+export const UserCard = (user: UserProps) => {
 	return (
 		<Container>
-			{photoURL ? (
-				<Avatar src={photoURL} />
-			) : (
-				<Avatar>{username![0].toUpperCase()}</Avatar>
-			)}
+			<UserThumbnail {...user} />
 			<UserDetails>
-				<h4>{username}</h4>
-				<p>{email}</p>
+				<h4>{user.username}</h4>
+				<p>{user.email}</p>
 			</UserDetails>
 		</Container>
 	);
