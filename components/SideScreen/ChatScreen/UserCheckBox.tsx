@@ -20,8 +20,6 @@ export const UserCheckBox = ({ user }: { user: UserProps }) => {
 		setChecked(!checked);
 	};
 
-	console.log(`checked`, checked);
-
 	return (
 		<Container>
 			{photoURL ? (
