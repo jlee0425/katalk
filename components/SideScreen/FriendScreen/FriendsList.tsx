@@ -4,7 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { UserCard } from './UserCard';
 
-export const FriendsList = (props: any) => {
+export const FriendsList = () => {
 	const friends = useFriendList();
 
 	return (
