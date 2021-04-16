@@ -1,9 +1,9 @@
 import { defaultUser } from './context';
 import { UserProps } from '@lib/context';
 import firebase from 'firebase/app';
+import { format } from 'timeago.js';
 import 'firebase/auth';
 import 'firebase/firestore';
-import { useDocumentDataOnce } from 'react-firebase-hooks/firestore';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -26,14 +26,13 @@ export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 export const firestore = app.firestore();
 export const serverTimestamp = firebase.firestore.FieldValue.serverTimestamp;
 
-export const userConverter = (user: firebase.User): UserProps => {
-	const converted: UserProps = {
+export const userConverter = (user: firebase.User) => {
+	return {
 		username: user.displayName || defaultUser.username,
 		email: user.email || defaultUser.email,
 		photoURL: user.photoURL || defaultUser.photoURL,
-		lastSeen: serverTimestamp(),
+		lastSeen: user.metadata.lastSignInTime,
 	};
-	return converted;
 };
 
 export const getUserWithEmail = async (email: string) => {
@@ -41,7 +40,7 @@ export const getUserWithEmail = async (email: string) => {
 	const query = userRef.where('email', '==', email).limit(1);
 	const user = (await query.get()).docs[0];
 
-	return user;
+	return userToJSON(user);
 };
 
 export const getUserWithID = async (
@@ -50,5 +49,14 @@ export const getUserWithID = async (
 	const userRef = await firestore.collection('users').doc(id).get();
 	const user = userRef.data();
 
-	return user;
+	return user ? userToJSON(user) : undefined;
+};
+
+const userToJSON = (user: firebase.firestore.DocumentData) => {
+	return {
+		username: user.username,
+		email: user.email,
+		photoURL: user.photoURL,
+		lastSeen: format(user.lastSeen),
+	};
 };
