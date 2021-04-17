@@ -1,9 +1,9 @@
-import { UserProps } from './context';
-import { useState, useEffect } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, firestore, getUserWithID, userConverter } from './firebase';
 import firebase from 'firebase/app';
+import { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
+import { UserProps } from './context';
+import { addUserToDB, auth, firestore, getUserWithID } from './firebase';
 
 export const useUserData = () => {
 	const [user, loading] = useAuthState(auth);
@@ -25,13 +25,6 @@ export const useUserData = () => {
 	}, [user]);
 
 	return { userInfo, loading };
-};
-
-const addUserToDB = async (user: firebase.User): Promise<void> => {
-	await firestore
-		.collection('users')
-		.doc(user.uid)
-		.set(userConverter(user), { merge: true });
 };
 
 export const useFriendList = () => {

@@ -52,6 +52,17 @@ export const getUserWithID = async (
 	return user ? userToJSON(user) : undefined;
 };
 
+export const addUserToDB = async (user: firebase.User): Promise<void> => {
+	await firestore
+		.collection('users')
+		.doc(user.uid)
+		.set(userConverter(user), { merge: true });
+};
+
+export const addChatToDB = async (user: firebase.User): Promise<void> => {
+	await firestore.collection('chats').add({});
+};
+
 const userToJSON = (user: firebase.firestore.DocumentData) => {
 	return {
 		username: user.username,
