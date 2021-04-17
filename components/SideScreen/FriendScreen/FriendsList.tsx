@@ -4,6 +4,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { UserCard } from './UserCard';
 
+/* TODO
+	implement SSR + ISR
+ */
+
 export const FriendsList = () => {
 	const friends = useFriendList();
 
