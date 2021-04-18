@@ -28,4 +28,5 @@ export const FriendStatusScreen = () => {
 
 const Container = styled(Center)`
 	flex-direction: column;
+	height: 100%;
 `;
