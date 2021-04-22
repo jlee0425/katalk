@@ -1,7 +1,7 @@
 import { SelectFriendsContext, UserProps } from '@lib/context';
 import { Avatar, FormControlLabel } from '@material-ui/core';
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -13,13 +13,22 @@ export const UserCheckBox = ({ user }: { user: UserProps }) => {
 
 	const handleCheck = () => {
 		const newList = checked
-			? selected.filter(({ email }) => email != user.email)
+			? selected.filter((u) => u != user)
 			: [...selected, user];
 
 		setSelected(newList);
 		setChecked(!checked);
 	};
 
+	useEffect(() => {
+		// TODO: `checked` is not reflected in circle icon.
+		setChecked(selected.indexOf(user) == -1 ? false : true);
+	}, [selected]);
+
+	useEffect(() => {
+		console.log(`selected.indexOf(user)`, selected.indexOf(user));
+		console.log(`checked`, checked);
+	}, [selected, checked]);
 	return (
 		<Container>
 			{photoURL ? (
@@ -30,15 +39,16 @@ export const UserCheckBox = ({ user }: { user: UserProps }) => {
 			<FormControlLabel
 				label={username}
 				labelPlacement='start'
+				value={checked}
 				control={
 					<Checkbox
+						name='checked'
 						icon={<RadioButtonUncheckedIcon />}
 						checkedIcon={<CheckedCircle />}
 					/>
 				}
 				style={{ float: 'right' }}
-				value={checked}
-				onChange={() => handleCheck()}
+				onChange={handleCheck}
 			/>
 		</Container>
 	);
@@ -55,27 +65,12 @@ const Container = styled.div`
 	}
 `;
 
-const UserDetails = styled.div`
-	display: flex;
-	flex-direction: column;
-	padding-left: 10px;
-	* {
-		margin: 0;
-		padding: 0;
-	}
-
-	h4 {
-		font-weight: 400;
-	}
-	p {
-		font-size: 12px;
-	}
-`;
-
 const CheckedCircle = styled(CheckCircleIcon)`
 	color: ${({ theme }) => theme.colors.kakaoYellow};
 
-	&:hover {
-		color: green;
+	&& {
+		&:hover {
+			color: green;
+		}
 	}
 `;
