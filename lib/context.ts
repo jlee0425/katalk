@@ -47,3 +47,14 @@ export const SelectFriendsContext = createContext<SelectFriendsProps>({
 	selected: [],
 	setSelected: () => {},
 });
+
+export interface MessageProps {
+	user: UserProps;
+	message: string;
+	sent: string;
+}
+export interface ChatProps {
+	chattees: UserProps[];
+	lastActive: string;
+	messages: MessageProps[];
+}
