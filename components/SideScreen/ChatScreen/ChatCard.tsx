@@ -1,7 +1,10 @@
+import { ChatProps } from '@lib/context';
 import React from 'react';
 
-interface Props {}
+interface Props {
+	chat: ChatProps;
+}
 
-export const ChatCard = (props: Props) => {
+export const ChatCard = ({ chat }: Props) => {
 	return <div></div>;
 };
