@@ -1,6 +1,6 @@
 import { Center, CustomModal, Title } from '@components/styledComponents';
-import { SelectFriendsContext, UserProps } from '@lib/context';
-import { useFriendList } from '@lib/hooks';
+import { SelectFriendsContext, UserContext, UserProps } from '@lib/context';
+import { useFriendsList } from '@lib/hooks/index';
 import { Backdrop, Button, IconButton, Input } from '@material-ui/core';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import SearchIcon from '@material-ui/icons/Search';
@@ -13,8 +13,9 @@ import React, {
 } from 'react';
 import { animated, useSpring } from 'react-spring';
 import styled from 'styled-components';
-import { UserCheckBox } from '../UserCheckBox';
+import { UserCheckBox } from './UserCheckBox';
 import { SelectedTags } from './SelectedTags';
+import { addChatToDB } from '@lib/firebase';
 
 interface Props {}
 
@@ -50,9 +51,10 @@ const Fade = forwardRef<HTMLDivElement, FadeProps>(
 );
 
 export const AddChatBtn = (props: Props) => {
+	const userInfo = useContext(UserContext);
 	const [open, setOpen] = useState(false);
 	const [selected, setSelected] = useState<UserProps[]>([]);
-	const friends = useFriendList();
+	const friends = useFriendsList();
 	const [listedFriends, setListedFriends] = useState<UserProps[]>([]);
 
 	useEffect(() => {
@@ -60,10 +62,14 @@ export const AddChatBtn = (props: Props) => {
 	}, []);
 
 	const handleOpen = () => setOpen(true);
-	const handleClose = () => setOpen(false);
+	const handleClose = () => {
+		setOpen(false);
+		setSelected([]);
+	};
 
-	const addChat = async (username: string): Promise<void> => {
-		// Todo
+	const addChat = () => {
+		addChatToDB([...selected, userInfo]);
+		setOpen(false);
 	};
 
 	const handleInputChange = (value: string) => {
@@ -106,7 +112,7 @@ export const AddChatBtn = (props: Props) => {
 							<Center>
 								<Button
 									type='submit'
-									onClick={() => {}}
+									onClick={addChat}
 									disabled={!selected.length}
 								>
 									Confirm
