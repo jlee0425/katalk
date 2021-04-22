@@ -1,5 +1,5 @@
 import { UserProps } from '@lib/context';
-import { useFriendList } from '@lib/hooks';
+import { useFriendsList } from '@lib/hooks/index';
 import React from 'react';
 import styled from 'styled-components';
 import { UserCard } from './UserCard';
@@ -9,7 +9,7 @@ import { UserCard } from './UserCard';
  */
 
 export const FriendsList = () => {
-	const friends = useFriendList();
+	const friends = useFriendsList();
 
 	return (
 		<Container>
