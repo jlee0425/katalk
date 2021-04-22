@@ -1,9 +1,9 @@
-import { defaultUser } from './context';
 import { UserProps } from '@lib/context';
 import firebase from 'firebase/app';
-import { format } from 'timeago.js';
 import 'firebase/auth';
 import 'firebase/firestore';
+import { format } from 'timeago.js';
+import { defaultUser } from './context';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -43,9 +43,9 @@ export const getUserWithEmail = async (email: string) => {
 	return userToJSON(user);
 };
 
-export const getUserWithID = async (
+export const fetchUserWithID = async (
 	id: string,
-): Promise<firebase.firestore.DocumentData | undefined> => {
+): Promise<UserProps | undefined> => {
 	const userRef = await firestore.collection('users').doc(id).get();
 	const user = userRef.data();
 
@@ -59,11 +59,31 @@ export const addUserToDB = async (user: firebase.User): Promise<void> => {
 		.set(userConverter(user), { merge: true });
 };
 
-export const addChatToDB = async (user: firebase.User): Promise<void> => {
-	await firestore.collection('chats').add({});
+export const addChatToDB = async (chattees: UserProps[]): Promise<void> => {
+	const chatRef = await firestore
+		.collection('chats')
+		.where('chattees', '==', chattees)
+		.get();
+
+	if (!chatRef.docs.length) {
+		await firestore.collection('chats').add({
+			chattees: [...chattees],
+			lastActive: '',
+			messages: [],
+		});
+	}
 };
 
-const userToJSON = (user: firebase.firestore.DocumentData) => {
+export const fetchChatWithID = async (
+	id: string,
+): Promise<firebase.firestore.DocumentData | undefined> => {
+	const chatRef = await firestore.collection('chats').doc(id).get();
+	const chat = chatRef.data();
+
+	return chat || undefined;
+};
+
+const userToJSON = (user: firebase.firestore.DocumentData): UserProps => {
 	return {
 		username: user.username,
 		email: user.email,
