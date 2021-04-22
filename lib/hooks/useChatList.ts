@@ -1,14 +1,12 @@
+import { ChatProps, UserProps } from '@lib/context';
+import { fetchChatWithID, firestore } from '@lib/firebase';
 import firebase from 'firebase/app';
-import { ChatProps } from '@lib/context';
-import { firestore, auth, fetchChatWithID } from '@lib/firebase';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
 
-export const useChatList = () => {
+export const useChatList = (user: UserProps) => {
 	const [chatsSnapshot, loading] = useCollection(
-		firestore
-			.collection('chats')
-			.where('chattees', 'array-contains', auth.currentUser!.uid),
+		firestore.collection('chats').where('chattees', 'array-contains', user),
 	);
 	const [chats, setChats] = useState<firebase.firestore.DocumentData>([]);
 
