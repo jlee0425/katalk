@@ -98,3 +98,33 @@ export const Logo = styled.img`
 	height: 70%;
 	max-height: 250px;
 `;
+
+export const CardContainer = styled.div`
+	display: flex;
+	flex-direction: row;
+	border-bottom: 1px solid #e6e3e3;
+	padding: 1rem 1rem;
+
+	&:hover {
+		background: #eeeeee;
+	}
+`;
+
+export const CardDetail = styled.div`
+	display: flex;
+	flex-direction: column;
+	padding-left: 10px;
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	h4 {
+		font-weight: 500;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+	p {
+		font-size: 12px;
+	}
+`;
