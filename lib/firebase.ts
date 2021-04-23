@@ -25,6 +25,7 @@ export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 
 export const firestore = app.firestore();
 export const serverTimestamp = firebase.firestore.FieldValue.serverTimestamp;
+export const fromMillis = firebase.firestore.Timestamp.fromMillis;
 
 export const userConverter = (user: firebase.User) => {
 	return {
@@ -68,7 +69,7 @@ export const addChatToDB = async (chattees: UserProps[]): Promise<void> => {
 	if (!chatRef.docs.length) {
 		await firestore.collection('chats').add({
 			chattees: [...chattees],
-			lastActive: '',
+			lastActive: fromMillis(serverTimestamp()),
 			messages: [],
 		});
 	}
