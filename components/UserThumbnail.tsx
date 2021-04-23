@@ -2,6 +2,7 @@ import { ScreenContext, UserProps } from '@lib/context';
 import { Avatar, Button } from '@material-ui/core';
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { UserAvatar } from './UserAvatar';
 
 export const UserThumbnail = (user: UserProps) => {
 	const { setSelectedElement } = useContext(ScreenContext);
@@ -9,11 +10,7 @@ export const UserThumbnail = (user: UserProps) => {
 
 	return (
 		<CustomButton onClick={handleClick}>
-			{user.photoURL ? (
-				<Avatar src={user.photoURL} />
-			) : (
-				<Avatar>{user.username![0].toUpperCase()}</Avatar>
-			)}
+			<UserAvatar user={user} />
 		</CustomButton>
 	);
 };
