@@ -7,8 +7,10 @@ import {
 } from '@components/styledComponents';
 import { auth, googleAuthProvider } from '@lib/firebase';
 import { CircularProgress } from '@material-ui/core';
+import { useRouter } from 'next/dist/client/router';
 import Head from 'next/head';
 import React from 'react';
+import toast from 'react-hot-toast';
 import styled from 'styled-components';
 
 interface Props {
@@ -16,8 +18,16 @@ interface Props {
 }
 
 const Login = ({ loading }: Props) => {
+	const router = useRouter();
+	if (auth.currentUser) router.push('/');
 	const signInWithGoogle = async () =>
-		await auth.signInWithPopup(googleAuthProvider).catch(console.log);
+		await auth
+			.signInWithPopup(googleAuthProvider)
+			.then(() => {
+				toast.success('login successful');
+				router.push('/');
+			})
+			.catch(() => toast.error('error occurred'));
 
 	return (
 		<Container>

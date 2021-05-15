@@ -13,6 +13,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { useSpring } from '@react-spring/core';
 import { animated } from '@react-spring/web';
 import React, { forwardRef, ReactElement, useState } from 'react';
+import toast from 'react-hot-toast';
 import styled from 'styled-components';
 
 interface FadeProps {
@@ -56,6 +57,11 @@ export const AddFriendBtn = () => {
 	const addFriend = async (email: string): Promise<void> => {
 		const friendDocSnapshot = await getUserWithEmail(email);
 		const userDoc = firestore.collection('users');
+		if (!friendDocSnapshot) {
+			toast.error('User does not exist');
+			setOpen(false);
+			return;
+		}
 
 		const currentUserRef = userDoc
 			.doc(auth.currentUser!.uid)
@@ -71,7 +77,10 @@ export const AddFriendBtn = () => {
 		batch.set(currentUserRef, { status: true });
 		batch.set(friendRef, { status: true });
 
-		await batch.commit().then(() => setOpen(false));
+		await batch.commit().then(() => {
+			toast.success(`Friend Added.`);
+			setOpen(false);
+		});
 	};
 
 	return (

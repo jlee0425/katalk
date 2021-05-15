@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import SideScreen from '@components/SideScreen';
 import MainScreen from '@components/MainScreen';
 import { ScreenContext, SCREENS } from '@lib/context';
+import { Toaster } from 'react-hot-toast';
 
 export default function Home() {
 	const [screen, setScreen] = useState(SCREENS.FriendScreen);
@@ -24,6 +25,7 @@ export default function Home() {
 					<SideScreen />
 					<MainScreen />
 				</ScreenContext.Provider>
+				<Toaster position='bottom-center' />
 			</Body>
 		</div>
 	);
