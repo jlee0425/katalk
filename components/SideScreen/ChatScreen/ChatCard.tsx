@@ -3,6 +3,9 @@ import { UserAvatar } from '@components/UserAvatar';
 import { ChatProps, UserContext } from '@lib/context';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import React, { useContext } from 'react';
+import styled from 'styled-components';
+import { format } from 'timeago.js';
+import { Usernames } from './Usernames';
 
 interface Props {
 	chat: ChatProps;
@@ -21,17 +24,16 @@ export const ChatCard = ({ chat }: Props) => {
 			</AvatarGroup>
 			<CardDetail>
 				<h4>
-					{chattees.map((chattee, i) => (
-						<span key={i}>
-							{i < chattees.length - 1
-								? chattee.username + ', '
-								: chattee.username + ' ' + chattees.length}
-						</span>
-					))}
+					<Usernames chattees={chattees} />
 				</h4>
 				<p>{messages[messages.length - 1]?.message}</p>
 			</CardDetail>
-			<p>{lastActive.toString()}</p>
+			<Timestamp>{format(lastActive.toDate().toISOString())}</Timestamp>
 		</CardContainer>
 	);
 };
+
+const Timestamp = styled.p`
+	font-size: 0.8rem;
+	color: grey;
+`;
