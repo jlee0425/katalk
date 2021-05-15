@@ -1,4 +1,4 @@
-import { Modal, TextField } from '@material-ui/core';
+import { Button, Modal, TextField } from '@material-ui/core';
 import styled from 'styled-components';
 
 export enum VARIANT {
@@ -100,8 +100,11 @@ export const Logo = styled.img`
 `;
 
 export const CardContainer = styled.div`
-	display: flex;
-	flex-direction: row;
+	display: grid;
+	width: 100%;
+	grid-template-columns: 1fr 3fr 1fr;
+	border: none;
+	background: white;
 	border-bottom: 1px solid #e6e3e3;
 	padding: 1rem 1rem;
 
