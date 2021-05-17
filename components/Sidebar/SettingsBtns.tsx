@@ -6,12 +6,14 @@ import NotificationsOffIcon from '@material-ui/icons/NotificationsOff';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { auth } from '@lib/firebase';
+import { useRouter } from 'next/dist/client/router';
 interface Props {}
 
 export const SettingsBtns = (props: Props) => {
 	/* notification function */
 	const [notification, setNotification] = useState(true);
 	const toggleNotifications = () => setNotification(!notification);
+	const router = useRouter();
 
 	return (
 		<Container>
@@ -21,7 +23,12 @@ export const SettingsBtns = (props: Props) => {
 			<IconButton>
 				<SettingsIcon />
 			</IconButton>
-			<IconButton onClick={() => auth.signOut()}>
+			<IconButton
+				onClick={() => {
+					router.push('/login');
+					auth.signOut();
+				}}
+			>
 				<ExitToAppIcon />
 			</IconButton>
 		</Container>
