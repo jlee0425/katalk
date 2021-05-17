@@ -1,6 +1,6 @@
 import { CardContainer, CardDetail } from '@components/styledComponents';
 import { UserAvatar } from '@components/UserAvatar';
-import { ChatProps, UserContext } from '@lib/context';
+import { ChatProps, ScreenContext, UserContext } from '@lib/context';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import React, { useContext } from 'react';
 import styled from 'styled-components';
@@ -12,11 +12,15 @@ interface Props {
 }
 
 export const ChatCard = ({ chat }: Props) => {
-	const { lastActive, messages } = chat;
+	const { messages } = chat;
 	const userInfo = useContext(UserContext);
+	const { setSelectedElement } = useContext(ScreenContext);
 	const chattees = chat.chattees.filter((c) => c.email != userInfo.email);
+
+	const handleCardClick = () => setSelectedElement(chat);
+
 	return (
-		<CardContainer>
+		<CardContainer onClick={handleCardClick}>
 			<AvatarGroup max={2}>
 				{chattees.map((chattee) => (
 					<UserAvatar user={chattee} key={chattee.email} />
@@ -28,12 +32,6 @@ export const ChatCard = ({ chat }: Props) => {
 				</h4>
 				<p>{messages[messages.length - 1]?.message}</p>
 			</CardDetail>
-			<Timestamp>{format(lastActive.toDate().toISOString())}</Timestamp>
 		</CardContainer>
 	);
 };
-
-const Timestamp = styled.p`
-	font-size: 0.8rem;
-	color: grey;
-`;
