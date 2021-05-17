@@ -1,12 +1,19 @@
-import { ScreenContext } from '@lib/context';
+import { ScreenContext, SCREENS, User, UserProps } from '@lib/context';
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+import ChatRoom from './ChatRoom';
 import { DefaultScreen } from './DefaultScreen';
 import { FriendStatusScreen } from './FriendStatusScreen';
 
 const index = () => {
-	const { selectedElement } = useContext(ScreenContext);
-	const Screen = selectedElement == null ? DefaultScreen : FriendStatusScreen;
+	const { screen, selectedElement } = useContext(ScreenContext);
+
+	const Screen =
+		selectedElement == null
+			? DefaultScreen
+			: screen == SCREENS.FriendScreen
+			? FriendStatusScreen
+			: ChatRoom;
 
 	return (
 		<Container>
