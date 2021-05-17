@@ -1,23 +1,20 @@
-import firebase from 'firebase/app';
-import { createContext, Dispatch, SetStateAction } from 'react';
 import { serverTimestamp } from './firebase';
-import { format } from 'timeago.js';
+import { createContext, Dispatch, SetStateAction } from 'react';
+import { Timestamp } from '@firebase/firestore-types';
 
 export interface UserProps {
 	username: string;
 	email: string;
 	photoURL: string;
-	lastSeen: string;
+	lastSeen: Timestamp;
 }
 
-export const defaultUser: UserProps = {
+export const UserContext = createContext<UserProps>({
 	username: 'username',
-	email: 'email@email.com',
+	email: 'e@mail.com',
 	photoURL: '',
-	lastSeen: format(serverTimestamp().toString()),
-};
-
-export const UserContext = createContext<UserProps>(defaultUser);
+	lastSeen: serverTimestamp() as Timestamp,
+});
 
 export enum SCREENS {
 	FriendScreen,
@@ -26,10 +23,12 @@ export enum SCREENS {
 
 export interface ScreenProps {
 	screen: SCREENS;
-	selectedElement: UserProps | null;
 	setScreen: Dispatch<SetStateAction<SCREENS>>;
-	setSelectedElement: Dispatch<SetStateAction<UserProps | null>>;
+	selectedElement: UserProps | ChatProps | null;
+	setSelectedElement: Dispatch<SetStateAction<UserProps | ChatProps | null>>;
 }
+
+export var User: UserProps;
 
 export const ScreenContext = createContext<ScreenProps>({
 	screen: SCREENS.FriendScreen,
@@ -51,10 +50,9 @@ export const SelectFriendsContext = createContext<SelectFriendsProps>({
 export interface MessageProps {
 	user: UserProps;
 	message: string;
-	sent: string;
+	sent: Timestamp;
 }
 export interface ChatProps {
 	chattees: UserProps[];
-	lastActive: string;
 	messages: MessageProps[];
 }
