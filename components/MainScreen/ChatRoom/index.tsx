@@ -1,9 +1,27 @@
-import React from 'react';
+import { ChatProps, ScreenContext, UserContext } from '@lib/context';
+import React, { useContext } from 'react';
+import styled from 'styled-components';
+import { Header } from './Header';
+import { InputField } from './InputField';
+import { Main } from './Main';
 
-interface Props {}
+const index = () => {
+	const { selectedElement } = useContext(ScreenContext);
+	const { chattees, messages } = selectedElement as ChatProps;
 
-const index = (props: Props) => {
-	return <div></div>;
+	return (
+		<Container>
+			<Header chattees={chattees} />
+			<Main messages={messages} />
+			<InputField />
+		</Container>
+	);
 };
 
 export default index;
+
+const Container = styled.div`
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+`;
