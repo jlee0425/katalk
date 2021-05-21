@@ -1,18 +1,34 @@
 import { Center, Title } from '@components/styledComponents';
-import { ScreenContext, User, UserContext, UserProps } from '@lib/context';
-import { addChatToDB } from '@lib/firebase';
+import {
+	ChatProps,
+	ScreenContext,
+	SCREENS,
+	User,
+	UserContext,
+	UserProps,
+} from '@lib/context';
+import { addChatToDB, fetchChatWithChattees } from '@lib/firebase';
 import { Avatar, Button } from '@material-ui/core';
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { format } from 'timeago.js';
 
 export const FriendStatusScreen = () => {
-	const { selectedElement } = useContext(ScreenContext);
+	const { selectedElement, setScreen, setSelectedElement } =
+		useContext(ScreenContext);
 	const user = selectedElement as UserProps;
 	const userInfo = useContext(UserContext);
 
-	const addChat = () => {
-		if (user != null) addChatToDB([user, userInfo]);
+	const handleClick = async () => {
+		if (user != null) {
+			const chat = (await fetchChatWithChattees([user, userInfo])) as ChatProps;
+			if (chat) {
+				setSelectedElement(chat);
+			} else {
+				addChatToDB([user, userInfo]);
+				setScreen(SCREENS.ChatScreen);
+			}
+		}
 	};
 
 	if (user != null) {
@@ -27,7 +43,7 @@ export const FriendStatusScreen = () => {
 				<Title>{user.email}</Title>
 				<p>{format(user.lastSeen?.toDate().toUTCString())}</p>
 				{userInfo.email != user?.email && (
-					<Button onClick={addChat}>Start Chat</Button>
+					<Button onClick={handleClick}>Start Chat</Button>
 				)}
 			</Container>
 		);
