@@ -3,7 +3,6 @@ import { UserProps } from '@lib/context';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
-import { format } from 'timeago.js';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -80,6 +79,20 @@ export const fetchChatWithID = async (
 	const chat = chatRef.data();
 
 	return chat || undefined;
+};
+
+export const fetchChatWithChattees = async (
+	chattees: UserProps[],
+): Promise<firebase.firestore.DocumentData> => {
+	const chatRef = await firestore
+		.collection('chats')
+		.where('chattees', '==', chattees)
+		.limit(1)
+		.get();
+
+	const chat = chatRef.docs[0]?.data();
+
+	return chat || null;
 };
 
 const userToJSON = (user: firebase.firestore.DocumentData): UserProps => {
