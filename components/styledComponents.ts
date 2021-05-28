@@ -24,17 +24,18 @@ export const KatalkButton = styled.button<AdditionalProps>`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: whitesmoke;
 	border-radius: 5px;
 	${({ theme, variant }) => {
 		switch (variant) {
 			case VARIANT.BROWN:
 				return `background-color: ${theme.colors.kakaoBrown};
         border: 1px solid ${theme.colors.kakaoBrown};
+				color: ${theme.colors.kakaoYellow};
         box-shadow: 1px 1px 5px ${theme.colors.kakaoBrown};`;
 			case VARIANT.YELLOW:
 				return `background-color: ${theme.colors.kakaoYellow};
         border: 1px solid ${theme.colors.kakaoYellow};
+				color: ${theme.colors.kakaoBrown};
         box-shadow: 1px 1px 5px ${theme.colors.kakaoYellow};`;
 		}
 	}}
