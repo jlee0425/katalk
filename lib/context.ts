@@ -3,18 +3,20 @@ import { createContext, Dispatch, SetStateAction } from 'react';
 import { Timestamp } from '@firebase/firestore-types';
 
 export interface UserProps {
+	id: string;
 	username: string;
 	email: string;
 	photoURL: string;
 	lastSeen: Timestamp;
 }
-
-export const UserContext = createContext<UserProps>({
-	username: 'username',
-	email: 'e@mail.com',
+export var User: UserProps = {
+	id: '',
+	username: '',
+	email: '',
 	photoURL: '',
 	lastSeen: serverTimestamp() as Timestamp,
-});
+};
+export const UserContext = createContext<UserProps>(User);
 
 export enum SCREENS {
 	FriendScreen,
@@ -27,8 +29,6 @@ export interface ScreenProps {
 	selectedElement: UserProps | ChatProps | null;
 	setSelectedElement: Dispatch<SetStateAction<UserProps | ChatProps | null>>;
 }
-
-export var User: UserProps;
 
 export const ScreenContext = createContext<ScreenProps>({
 	screen: SCREENS.FriendScreen,
@@ -53,6 +53,7 @@ export interface MessageProps {
 	sent: Timestamp;
 }
 export interface ChatProps {
+	id: string;
 	chattees: UserProps[];
 	messages: MessageProps[];
 }
