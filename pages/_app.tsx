@@ -8,7 +8,6 @@ import Login from './login';
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const { userInfo, loading } = useUserData();
-
 	return (
 		<>
 			<GlobalStyle />
