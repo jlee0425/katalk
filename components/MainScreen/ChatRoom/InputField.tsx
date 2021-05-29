@@ -1,16 +1,31 @@
 import { KatalkButton, VARIANT } from '@components/styledComponents';
-import { ScreenContext } from '@lib/context';
-import { firestore } from '@lib/firebase';
+import { Timestamp } from '@firebase/firestore-types';
+import { ChatProps, ScreenContext, UserContext } from '@lib/context';
+import { firestore, serverTimestamp } from '@lib/firebase';
 import { TextField } from '@material-ui/core';
-import { useRouter } from 'next/router';
-import React, { useContext, useState } from 'react';
+import React, { FormEvent, useContext, useState } from 'react';
 import styled from 'styled-components';
 
 export const InputField = () => {
+	const userInfo = useContext(UserContext);
 	const [msg, setMsg] = useState('');
-	const sendMsg = async (msg: string) => {
-		const chatSnapshot = await firestore.collection('chats').get();
-		chatSnapshot.docs;
+	const { selectedElement } = useContext(ScreenContext);
+	const { id } = selectedElement as ChatProps;
+
+	const sendMsg = (e: FormEvent) => {
+		e.preventDefault();
+		const msgRef = firestore.collection('chats').doc(id).collection('messages');
+		const userRef = firestore.collection('users').doc(userInfo.id);
+		const res = msgRef.add({
+			userId: userInfo,
+			sent: serverTimestamp() as Timestamp,
+			message: msg,
+		});
+		userRef.set({ lastSeen: serverTimestamp() as Timestamp }, { merge: true });
+
+		if (res) {
+			setMsg('');
+		}
 	};
 
 	return (
@@ -25,10 +40,8 @@ export const InputField = () => {
 			<SendBtn
 				variant={VARIANT.YELLOW}
 				disabled={msg.length < 1}
-				onClick={() => {
-					sendMsg(msg);
-					setMsg('');
-				}}
+				onClick={(e) => sendMsg(e)}
+				type='submit'
 			>
 				SEND
 			</SendBtn>
@@ -50,6 +63,9 @@ const Container = styled.div`
 const TextBox = styled(TextField)`
 	flex: 0.4 1 auto;
 	overflow-y: auto;
+	::-webkit-scrollbar {
+		display: none;
+	}
 `;
 const SendBtn = styled(KatalkButton)`
 	width: 3rem;
