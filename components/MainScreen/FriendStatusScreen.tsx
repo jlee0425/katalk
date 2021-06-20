@@ -1,12 +1,5 @@
 import { Center, Title } from '@components/styledComponents';
-import {
-	ChatProps,
-	ScreenContext,
-	SCREENS,
-	User,
-	UserContext,
-	UserProps,
-} from '@lib/context';
+import { ScreenContext, SCREENS, UserContext, UserProps } from '@lib/context';
 import { addChatToDB, fetchChatWithChattees } from '@lib/firebase';
 import { Avatar, Button } from '@material-ui/core';
 import React, { useContext } from 'react';
@@ -21,7 +14,7 @@ export const FriendStatusScreen = () => {
 
 	const handleClick = async () => {
 		if (user != null) {
-			const chat = (await fetchChatWithChattees([user, userInfo])) as ChatProps;
+			const chat = await fetchChatWithChattees([user, userInfo]);
 			if (chat) {
 				setSelectedElement(chat);
 			} else {
