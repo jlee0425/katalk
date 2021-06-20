@@ -10,7 +10,7 @@ import { UserCard } from './UserCard';
 
 export const FriendsList = () => {
 	const friends = useFriendsList();
-
+	console.log(`friends`, friends);
 	return (
 		<Container>
 			{friends.map((friend: UserProps) => (

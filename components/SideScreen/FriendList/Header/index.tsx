@@ -5,11 +5,11 @@ import { UserCard } from '../UserCard';
 import { Topbar } from './Topbar';
 
 const index = () => {
-	const { username, email, photoURL } = useContext(UserContext);
+	const userInfo = useContext(UserContext);
 	return (
 		<Container>
 			<Topbar />
-			<UserCard username={username} email={email} photoURL={photoURL} />
+			<UserCard {...userInfo} />
 		</Container>
 	);
 };
