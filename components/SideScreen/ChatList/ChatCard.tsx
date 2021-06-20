@@ -1,10 +1,9 @@
 import { CardContainer, CardDetail } from '@components/styledComponents';
 import { UserAvatar } from '@components/UserAvatar';
-import { ChatProps, ScreenContext, UserContext } from '@lib/context';
+import { ChatProps, UserContext } from '@lib/context';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
+import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
-import styled from 'styled-components';
-import { format } from 'timeago.js';
 import { Usernames } from './Usernames';
 
 interface Props {
@@ -12,12 +11,12 @@ interface Props {
 }
 
 export const ChatCard = ({ chat }: Props) => {
+	const router = useRouter();
 	const { messages } = chat;
 	const userInfo = useContext(UserContext);
-	const { setSelectedElement } = useContext(ScreenContext);
 	const chattees = chat.chattees.filter((c) => c.email != userInfo.email);
 
-	const handleCardClick = () => setSelectedElement(chat);
+	const handleCardClick = () => router.push(`/chat/${chat.cid}`);
 
 	return (
 		<CardContainer onClick={handleCardClick}>

@@ -1,5 +1,5 @@
 import { Center, CustomModal, Title } from '@components/styledComponents';
-import { SelectFriendsContext, UserContext, UserProps } from '@lib/context';
+import { UserContext, UserProps } from '@lib/context';
 import { useFriendsList } from '@lib/hooks/index';
 import { Backdrop, Button, IconButton, Input } from '@material-ui/core';
 import AddCommentIcon from '@material-ui/icons/AddComment';
@@ -16,6 +16,7 @@ import styled from 'styled-components';
 import { UserCheckBox } from './UserCheckBox';
 import { SelectedTags } from './SelectedTags';
 import { addChatToDB } from '@lib/firebase';
+import { useRouter } from 'next/router';
 
 interface Props {}
 
@@ -51,6 +52,7 @@ const Fade = forwardRef<HTMLDivElement, FadeProps>(
 );
 
 export const AddChatBtn = (props: Props) => {
+	const router = useRouter();
 	const userInfo = useContext(UserContext);
 	const [open, setOpen] = useState(false);
 	const [selected, setSelected] = useState<UserProps[]>([]);
@@ -67,8 +69,9 @@ export const AddChatBtn = (props: Props) => {
 		setSelected([]);
 	};
 
-	const addChat = () => {
-		addChatToDB([...selected, userInfo]);
+	const addChat = async () => {
+		const chat = await addChatToDB([...selected, userInfo]);
+		router.push(`/chat/${chat?.cid}`);
 		setOpen(false);
 	};
 
@@ -93,33 +96,31 @@ export const AddChatBtn = (props: Props) => {
 				BackdropProps={{ timeout: 500 }}
 			>
 				<Fade in={open}>
-					<SelectFriendsContext.Provider value={{ selected, setSelected }}>
-						<TempPaper>
-							<Title>
-								Choose Participants {!!selected.length && selected.length}
-							</Title>
-							<SelectedTags tags={selected} />
-							<Input
-								type='search'
-								startAdornment={<SearchIcon height='2px' />}
-								placeholder='Search By Name'
-								onChange={(e) => handleInputChange(e.target.value)}
-							/>
-							<p>Friends {listedFriends.length}</p>
-							{listedFriends.map((friend, i) => (
-								<UserCheckBox user={friend} key={i} />
-							))}
-							<Center>
-								<Button
-									type='submit'
-									onClick={addChat}
-									disabled={!selected.length}
-								>
-									Confirm
-								</Button>
-							</Center>
-						</TempPaper>
-					</SelectFriendsContext.Provider>
+					<TempPaper>
+						<Title>
+							Choose Participants {!!selected.length && selected.length}
+						</Title>
+						<SelectedTags tags={selected} />
+						<Input
+							type='search'
+							startAdornment={<SearchIcon height='2px' />}
+							placeholder='Search By Name'
+							onChange={(e) => handleInputChange(e.target.value)}
+						/>
+						<p>Friends {listedFriends.length}</p>
+						{listedFriends.map((friend, i) => (
+							<UserCheckBox user={friend} key={i} />
+						))}
+						<Center>
+							<Button
+								type='submit'
+								onClick={addChat}
+								disabled={!selected.length}
+							>
+								Confirm
+							</Button>
+						</Center>
+					</TempPaper>
 				</Fade>
 			</CustomModal>
 		</>
