@@ -13,12 +13,12 @@ import { ChatBubble } from './ChatBubble';
 export const Main = ({ messages }: { messages: MessageProps[] }) => {
 	const userInfo = useContext(UserContext);
 	const { selectedElement } = useContext(ScreenContext);
-	const chat = selectedElement as ChatProps;
+	const { id } = selectedElement as ChatProps;
 
 	const [msgSnapshot] = useCollection(
 		firestore
 			.collection('chats')
-			.doc(chat.id)
+			.doc(id)
 			.collection('messages')
 			.orderBy('sent', 'asc'),
 	);
@@ -34,7 +34,7 @@ export const Main = ({ messages }: { messages: MessageProps[] }) => {
 			));
 		}
 	};
-	return <Container></Container>;
+	return <Container>{showMsg()}</Container>;
 };
 
 const Container = styled.div`
