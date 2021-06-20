@@ -2,9 +2,7 @@ import { Center, Logo, LogoContainer } from '@components/styledComponents';
 import React from 'react';
 import styled from 'styled-components';
 
-interface Props {}
-
-export const DefaultScreen = (props: Props) => {
+export const DefaultScreen = () => {
 	return (
 		<Container>
 			<LogoContainer>
@@ -15,5 +13,6 @@ export const DefaultScreen = (props: Props) => {
 };
 
 const Container = styled(Center)`
-	height: 100%;
+	width: 60%;
+	background-color: beige;
 `;
