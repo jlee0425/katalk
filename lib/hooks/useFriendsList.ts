@@ -8,7 +8,7 @@ export const useFriendsList = () => {
 	const [friendsSnapshot, loading] = useCollection(
 		firestore
 			.collection('users')
-			.doc(auth.currentUser!.uid)
+			.doc(auth.currentUser?.uid)
 			.collection('friends'),
 	);
 	const [friends, setFriends] = useState<firebase.firestore.DocumentData>([]);
@@ -20,7 +20,7 @@ export const useFriendsList = () => {
 			const users = await Promise.all(
 				friendsIDs.map((id) => fetchUserWithID(id)),
 			);
-			setFriends(users);
+			setFriends(users.filter((u) => u));
 		};
 
 		if (friendsSnapshot && !loading) {

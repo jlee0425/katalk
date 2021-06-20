@@ -1,5 +1,4 @@
-import { Timestamp } from '@firebase/firestore-types';
-import { UserProps } from '@lib/context';
+import { UserProps, ChatProps } from '@lib/context';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -25,15 +24,6 @@ export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 export const firestore = app.firestore();
 export const serverTimestamp = firebase.firestore.FieldValue.serverTimestamp;
 
-export const userConverter = (user: firebase.User): UserProps => {
-	return {
-		username: user.displayName || '',
-		email: user.email || '',
-		photoURL: user.photoURL || '',
-		lastSeen: serverTimestamp() as Timestamp,
-	};
-};
-
 export const getUserWithEmail = async (email: string) => {
 	const userRef = firestore.collection('users');
 	const query = userRef.where('email', '==', email).limit(1);
@@ -52,24 +42,35 @@ export const fetchUserWithID = async (
 };
 
 export const addUserToDB = async (user: firebase.User): Promise<void> => {
-	await firestore
-		.collection('users')
-		.doc(user.uid)
-		.set(userConverter(user), { merge: true });
+	await firestore.collection('users').doc(user.uid).set(
+		{
+			email: user.email,
+			username: user.displayName,
+			lastSeen: serverTimestamp(),
+			photoURL: user.photoURL,
+		},
+		{ merge: true },
+	);
 };
 
-export const addChatToDB = async (chattees: UserProps[]): Promise<void> => {
+export const addChatToDB = async (
+	chattees: UserProps[],
+): Promise<ChatProps | null> => {
 	const chatRef = await firestore
 		.collection('chats')
 		.where('chattees', '==', chattees)
 		.get();
 
 	if (!chatRef.docs.length) {
-		await firestore.collection('chats').add({
+		const docRef = await firestore.collection('chats').add({
 			chattees: [...chattees],
 			messages: [],
 		});
+		const data = (await docRef.get()).data() as Partial<ChatProps>;
+		return { cid: docRef.id, ...data } as ChatProps;
 	}
+
+	return null;
 };
 
 export const fetchChatWithID = async (
@@ -83,20 +84,21 @@ export const fetchChatWithID = async (
 
 export const fetchChatWithChattees = async (
 	chattees: UserProps[],
-): Promise<firebase.firestore.DocumentData> => {
+): Promise<ChatProps | null> => {
 	const chatRef = await firestore
 		.collection('chats')
 		.where('chattees', '==', chattees)
 		.limit(1)
 		.get();
 
-	const chat = chatRef.docs[0]?.data();
+	const chat = chatRef.docs[0]?.data() as ChatProps;
 
 	return chat || null;
 };
 
 const userToJSON = (user: firebase.firestore.DocumentData): UserProps => {
 	return {
+		uid: user.uid,
 		username: user.username,
 		email: user.email,
 		photoURL: user.photoURL,
