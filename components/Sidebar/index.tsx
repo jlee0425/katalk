@@ -25,5 +25,9 @@ const Container = styled.div`
 	max-width: 60px;
 	padding: 15px 0;
 	justify-content: space-between;
+	overflow-y: scroll;
+	::-webkit-scrollbar {
+		display: none;
+	}
 	background: #dadada;
 `;
