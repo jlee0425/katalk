@@ -7,7 +7,7 @@ import {
 } from '@components/styledComponents';
 import { auth, googleAuthProvider } from '@lib/firebase';
 import { CircularProgress } from '@material-ui/core';
-import { useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import React from 'react';
 import toast from 'react-hot-toast';
